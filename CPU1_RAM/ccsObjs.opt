@@ -1,0 +1,11 @@
+"./syscfg/board.obj"
+"./syscfg/device.obj"
+"./syscfg/c2000ware_libraries.obj"
+"./f280015x_codestartbranch.obj"
+"./f280015x_globalvariabledefs.obj"
+"./main.obj"
+"../280015x_generic_ram_lnk.cmd"
+"C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/ccs/Debug/driverlib.lib"
+"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/cmd/f280015x_headers_nonBIOS.cmd"
+-lc2000ware_libraries.cmd.genlibs
+-llibc.a

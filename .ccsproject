@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?ccsproject version="1.0"?>
+<projectOptions>
+	<ccsVariant value="50:Theia-based"/>
+	<ccsVersion value="70.2.0"/>
+	<deviceFamily value="C2000"/>
+	<executableActions value=""/>
+	<createSlaveProjects value=""/>
+	<templateProperties value="id=empty_sysconfig_64pm.projectspec.InterleavedPSU_EvalBoard_F2800155"/>
+	<origin value="C:\ti\C2000Ware_6_00_00_00\driverlib\f280015x\examples\pinmux\CCS\empty_sysconfig_64pm.projectspec"/>
+	<filesToOpen value=""/>
+	<activeTargetConfiguration value="targetConfigs/TMS320F2800157.ccxml"/>
+	<isTargetConfigurationManual value="true"/>
+</projectOptions>

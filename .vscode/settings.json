@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "board.h": "c",
+        "gpio.h": "c",
+        "f28x_project.h": "c",
+        "psu.h": "c",
+        "c2000ware_libraries.h": "c",
+        "*.cmd": "plaintext",
+        "*.asm": "asm"
+    }
+}

@@ -1,0 +1,35 @@
+{
+  "configurations": [
+    {
+      "name": "F280015x",
+      "includePath": [
+        "${workspaceFolder}/CPU1_RAM/syscfg",
+        
+        "C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include",  // Bitfield headers
+        "C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include",   // Support headers
+        "C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib",             // DriverLib
+        "C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/",  // for control for PI
+        "C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include", // For FPU
+        "C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include",
+        "${workspaceFolder}/**" //  was originally up top
+      ],
+      "defines": [
+        "__TMS320C28XX__",
+        "CPU1",
+        "_DUAL_HEADERS",
+        "DEVICE_F280015x",     // Required for bitfield header macros
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE",
+        "__INTELLISENSE__",
+        "__interrupt=",
+        "__cregister="
+      ],
+      "intelliSenseMode": "windows-clang-x64",
+      "forcedInclude": [
+        "${workspaceFolder}/.vscode/intellisense_fixes.h"
+      ]
+    }
+  ],
+  "version": 4
+}
