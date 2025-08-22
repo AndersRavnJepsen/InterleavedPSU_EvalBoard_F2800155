@@ -46,8 +46,62 @@ extern "C"
 #endif
 
 #include "board.h"
+#include "DCL.h"
+#include "DCLF32.h"
+
+//
+// CONTROLLER
+//
+//
+// pi1 variables
+//
+extern DCL_PI pi1;
+//
+// pi2 variables
+//
+extern DCL_PI pi2;
+//
+// pi3 variables
+//
+extern DCL_PI pi3;
+//
+// pi4 variables
+//
+extern DCL_PI pi4;
+//
+// CONTROLLER functions
+//
+void pi1_init();
+void pi2_init();
+void pi3_init();
+void pi4_init();
 
 
+#include <C28x_FPU_FastRTS.h>
+#include <fastrts.h>
+#include "math.h"
+#include <fpu32/C28x_FPU_FastRTS.h>
+
+//
+//  Functions available for FPU32 configuration:
+//
+//  float32_t acosf(float32_t X)
+//  float32_t asinf(float32_t X)
+//  float32_t atanf(float32_t X)
+//  float32_t atan2f(float32_t Y, float32_t X)
+//  float32_t cosf(float32_t X)
+//  float32_t FS$$DIV(float32_t X, float32_t Y); call using '/' operator
+//  float32_t expf(float32_t X)
+//  float32_t isqrtf(float32_t X)
+//  float32_t logf(float32_t X)
+//  float32_t powf(float32_t X, float32_t Y)
+//  float32_t sinf(float32_t X)
+//  float32_t sqrtf(float32_t X)
+//
+void FFR_init();
+
+
+void CONTROLLER_init();
 void C2000Ware_libraries_init();
 
 //*****************************************************************************

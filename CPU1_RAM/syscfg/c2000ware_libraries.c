@@ -36,5 +36,111 @@
 
 void C2000Ware_libraries_init()
 {
+    CONTROLLER_init();
+    FFR_init();
+}
+
+
+//
+// DCL CONTROLLER
+//
+//
+// pi1 variables
+//
+DCL_PI pi1 = PI_DEFAULTS;
+DCL_PI_SPS pi1_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi1_css = DCL_CSS_DEFAULTS;
+//
+// pi2 variables
+//
+DCL_PI pi2 = PI_DEFAULTS;
+DCL_PI_SPS pi2_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi2_css = DCL_CSS_DEFAULTS;
+//
+// pi3 variables
+//
+DCL_PI pi3 = PI_DEFAULTS;
+DCL_PI_SPS pi3_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi3_css = DCL_CSS_DEFAULTS;
+//
+// pi4 variables
+//
+DCL_PI pi4 = PI_DEFAULTS;
+DCL_PI_SPS pi4_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi4_css = DCL_CSS_DEFAULTS;
+void pi1_init(){
+    //
+    // pi1 settings
+    //
+    pi1.sps = &pi1_sps;
+    pi1.css = &pi1_css;
+    pi1.Kp = 0.001f;
+    pi1.Ki = 0.0001f;
+    pi1.i10 = 0.0f;
+    pi1.Umax = 1.0f;
+    pi1.Umin = 0.0f;
+    pi1.i6 = 1.0f;
+    pi1.i11 = 0.0f;
+    pi1.Imax = 1.0f;
+    pi1.Imin = 0.0f;
+}
+void pi2_init(){
+    //
+    // pi2 settings
+    //
+    pi2.sps = &pi2_sps;
+    pi2.css = &pi2_css;
+    pi2.Kp = 0.001f;
+    pi2.Ki = 0.0001f;
+    pi2.i10 = 0.0f;
+    pi2.Umax = 1.0f;
+    pi2.Umin = 0.0f;
+    pi2.i6 = 1.0f;
+    pi2.i11 = 0.0f;
+    pi2.Imax = 1.0f;
+    pi2.Imin = 0.0f;
+}
+void pi3_init(){
+    //
+    // pi3 settings
+    //
+    pi3.sps = &pi3_sps;
+    pi3.css = &pi3_css;
+    pi3.Kp = 0.001f;
+    pi3.Ki = 0.0001f;
+    pi3.i10 = 0.0f;
+    pi3.Umax = 1.0f;
+    pi3.Umin = 0.0f;
+    pi3.i6 = 1.0f;
+    pi3.i11 = 0.0f;
+    pi3.Imax = 1.0f;
+    pi3.Imin = 0.0f;
+}
+void pi4_init(){
+    //
+    // pi4 settings
+    //
+    pi4.sps = &pi4_sps;
+    pi4.css = &pi4_css;
+    pi4.Kp = 0.001f;
+    pi4.Ki = 0.0001f;
+    pi4.i10 = 0.0f;
+    pi4.Umax = 1.0f;
+    pi4.Umin = 0.0f;
+    pi4.i6 = 1.0f;
+    pi4.i11 = 0.0f;
+    pi4.Imax = 1.0f;
+    pi4.Imin = 0.0f;
+}
+void CONTROLLER_init(){
+    pi1_init();
+    pi2_init();
+    pi3_init();
+    pi4_init();
+}
+
+void FFR_init()
+{
+
 }
 

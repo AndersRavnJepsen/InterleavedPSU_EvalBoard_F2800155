@@ -87,6 +87,17 @@ main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/devi
 main.obj: syscfg/board.h
 main.obj: syscfg/device.h
 main.obj: syscfg/c2000ware_libraries.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCL.h
+main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/complex.h
+main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/math.h
+main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/_defs.h
+main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/machine/_limits.h
+main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlib.h
+main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlibf.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCLF32.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/C28x_FPU_FastRTS.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fastrts.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fpu32/C28x_FPU_FastRTS.h
 main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/F280015x_Device.h
 main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/assert.h
 main.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdarg.h
@@ -297,6 +308,28 @@ syscfg/board.h:
 syscfg/device.h:
 
 syscfg/c2000ware_libraries.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCL.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/complex.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/math.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/_defs.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/machine/_limits.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlib.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlibf.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCLF32.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/C28x_FPU_FastRTS.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fastrts.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fpu32/C28x_FPU_FastRTS.h:
 
 C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/F280015x_Device.h:
 

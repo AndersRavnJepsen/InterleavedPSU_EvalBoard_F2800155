@@ -1,0 +1,7 @@
+-I"C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include"
+
+--abi=eabi
+--float_support=fpu32
+--tmu_support=tmu0
+
+-I"C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include"

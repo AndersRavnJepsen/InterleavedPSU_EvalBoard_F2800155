@@ -87,6 +87,17 @@ syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/dr
 syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/driver_inclusive_terminology_mapping.h
 syscfg/c2000ware_libraries.obj: syscfg/device.h
 syscfg/c2000ware_libraries.obj: syscfg/clocktree.h
+syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCL.h
+syscfg/c2000ware_libraries.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/complex.h
+syscfg/c2000ware_libraries.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/math.h
+syscfg/c2000ware_libraries.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/_defs.h
+syscfg/c2000ware_libraries.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/machine/_limits.h
+syscfg/c2000ware_libraries.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlib.h
+syscfg/c2000ware_libraries.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlibf.h
+syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCLF32.h
+syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/C28x_FPU_FastRTS.h
+syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fastrts.h
+syscfg/c2000ware_libraries.obj: C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fpu32/C28x_FPU_FastRTS.h
 
 syscfg/c2000ware_libraries.c:
 
@@ -261,4 +272,26 @@ C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/driver_inclusive_termino
 syscfg/device.h:
 
 syscfg/clocktree.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCL.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/complex.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/math.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/_defs.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/machine/_limits.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlib.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/stdlibf.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include/DCLF32.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/C28x_FPU_FastRTS.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fastrts.h:
+
+C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include/fpu32/C28x_FPU_FastRTS.h:
 
