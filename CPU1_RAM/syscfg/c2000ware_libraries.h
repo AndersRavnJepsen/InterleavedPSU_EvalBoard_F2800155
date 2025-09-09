@@ -53,28 +53,28 @@ extern "C"
 // CONTROLLER
 //
 //
-// pi1 variables
+// pi_current1 variables
 //
-extern DCL_PI pi1;
+extern DCL_PI pi_current1;
 //
-// pi2 variables
+// pi_current2 variables
 //
-extern DCL_PI pi2;
+extern DCL_PI pi_current2;
 //
-// pi3 variables
+// pi_current3 variables
 //
-extern DCL_PI pi3;
+extern DCL_PI pi_current3;
 //
-// pi4 variables
+// pi_current4 variables
 //
-extern DCL_PI pi4;
+extern DCL_PI pi_current4;
 //
 // CONTROLLER functions
 //
-void pi1_init();
-void pi2_init();
-void pi3_init();
-void pi4_init();
+void pi_current1_init();
+void pi_current2_init();
+void pi_current3_init();
+void pi_current4_init();
 
 
 #include <C28x_FPU_FastRTS.h>

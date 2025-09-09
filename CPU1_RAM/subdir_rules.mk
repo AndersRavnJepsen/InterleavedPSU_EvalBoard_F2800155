@@ -21,6 +21,7 @@ syscfg/pinmux.csv: build-1298262865
 syscfg/epwm.dot: build-1298262865
 syscfg/device.c: build-1298262865
 syscfg/device.h: build-1298262865
+syscfg/adc.dot: build-1298262865
 syscfg/c2000ware_libraries.cmd.genlibs: build-1298262865
 syscfg/c2000ware_libraries.opt: build-1298262865
 syscfg/c2000ware_libraries.c: build-1298262865

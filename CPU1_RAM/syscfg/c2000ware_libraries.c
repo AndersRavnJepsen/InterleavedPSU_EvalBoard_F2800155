@@ -45,98 +45,98 @@ void C2000Ware_libraries_init()
 // DCL CONTROLLER
 //
 //
-// pi1 variables
+// pi_current1 variables
 //
-DCL_PI pi1 = PI_DEFAULTS;
-DCL_PI_SPS pi1_sps = PI_SPS_DEFAULTS;
-DCL_CSS pi1_css = DCL_CSS_DEFAULTS;
+DCL_PI pi_current1 = PI_DEFAULTS;
+DCL_PI_SPS pi_current1_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi_current1_css = DCL_CSS_DEFAULTS;
 //
-// pi2 variables
+// pi_current2 variables
 //
-DCL_PI pi2 = PI_DEFAULTS;
-DCL_PI_SPS pi2_sps = PI_SPS_DEFAULTS;
-DCL_CSS pi2_css = DCL_CSS_DEFAULTS;
+DCL_PI pi_current2 = PI_DEFAULTS;
+DCL_PI_SPS pi_current2_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi_current2_css = DCL_CSS_DEFAULTS;
 //
-// pi3 variables
+// pi_current3 variables
 //
-DCL_PI pi3 = PI_DEFAULTS;
-DCL_PI_SPS pi3_sps = PI_SPS_DEFAULTS;
-DCL_CSS pi3_css = DCL_CSS_DEFAULTS;
+DCL_PI pi_current3 = PI_DEFAULTS;
+DCL_PI_SPS pi_current3_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi_current3_css = DCL_CSS_DEFAULTS;
 //
-// pi4 variables
+// pi_current4 variables
 //
-DCL_PI pi4 = PI_DEFAULTS;
-DCL_PI_SPS pi4_sps = PI_SPS_DEFAULTS;
-DCL_CSS pi4_css = DCL_CSS_DEFAULTS;
-void pi1_init(){
+DCL_PI pi_current4 = PI_DEFAULTS;
+DCL_PI_SPS pi_current4_sps = PI_SPS_DEFAULTS;
+DCL_CSS pi_current4_css = DCL_CSS_DEFAULTS;
+void pi_current1_init(){
     //
-    // pi1 settings
+    // pi_current1 settings
     //
-    pi1.sps = &pi1_sps;
-    pi1.css = &pi1_css;
-    pi1.Kp = 0.001f;
-    pi1.Ki = 0.0001f;
-    pi1.i10 = 0.0f;
-    pi1.Umax = 1.0f;
-    pi1.Umin = 0.0f;
-    pi1.i6 = 1.0f;
-    pi1.i11 = 0.0f;
-    pi1.Imax = 1.0f;
-    pi1.Imin = 0.0f;
+    pi_current1.sps = &pi_current1_sps;
+    pi_current1.css = &pi_current1_css;
+    pi_current1.Kp = 0.001f;
+    pi_current1.Ki = 0.0001f;
+    pi_current1.i10 = 0.0f;
+    pi_current1.Umax = 1.0f;
+    pi_current1.Umin = 0.0f;
+    pi_current1.i6 = 1.0f;
+    pi_current1.i11 = 0.0f;
+    pi_current1.Imax = 1.0f;
+    pi_current1.Imin = 0.0f;
 }
-void pi2_init(){
+void pi_current2_init(){
     //
-    // pi2 settings
+    // pi_current2 settings
     //
-    pi2.sps = &pi2_sps;
-    pi2.css = &pi2_css;
-    pi2.Kp = 0.001f;
-    pi2.Ki = 0.0001f;
-    pi2.i10 = 0.0f;
-    pi2.Umax = 1.0f;
-    pi2.Umin = 0.0f;
-    pi2.i6 = 1.0f;
-    pi2.i11 = 0.0f;
-    pi2.Imax = 1.0f;
-    pi2.Imin = 0.0f;
+    pi_current2.sps = &pi_current2_sps;
+    pi_current2.css = &pi_current2_css;
+    pi_current2.Kp = 0.001f;
+    pi_current2.Ki = 0.0001f;
+    pi_current2.i10 = 0.0f;
+    pi_current2.Umax = 1.0f;
+    pi_current2.Umin = 0.0f;
+    pi_current2.i6 = 1.0f;
+    pi_current2.i11 = 0.0f;
+    pi_current2.Imax = 1.0f;
+    pi_current2.Imin = 0.0f;
 }
-void pi3_init(){
+void pi_current3_init(){
     //
-    // pi3 settings
+    // pi_current3 settings
     //
-    pi3.sps = &pi3_sps;
-    pi3.css = &pi3_css;
-    pi3.Kp = 0.001f;
-    pi3.Ki = 0.0001f;
-    pi3.i10 = 0.0f;
-    pi3.Umax = 1.0f;
-    pi3.Umin = 0.0f;
-    pi3.i6 = 1.0f;
-    pi3.i11 = 0.0f;
-    pi3.Imax = 1.0f;
-    pi3.Imin = 0.0f;
+    pi_current3.sps = &pi_current3_sps;
+    pi_current3.css = &pi_current3_css;
+    pi_current3.Kp = 0.001f;
+    pi_current3.Ki = 0.0001f;
+    pi_current3.i10 = 0.0f;
+    pi_current3.Umax = 1.0f;
+    pi_current3.Umin = 0.0f;
+    pi_current3.i6 = 1.0f;
+    pi_current3.i11 = 0.0f;
+    pi_current3.Imax = 1.0f;
+    pi_current3.Imin = 0.0f;
 }
-void pi4_init(){
+void pi_current4_init(){
     //
-    // pi4 settings
+    // pi_current4 settings
     //
-    pi4.sps = &pi4_sps;
-    pi4.css = &pi4_css;
-    pi4.Kp = 0.001f;
-    pi4.Ki = 0.0001f;
-    pi4.i10 = 0.0f;
-    pi4.Umax = 1.0f;
-    pi4.Umin = 0.0f;
-    pi4.i6 = 1.0f;
-    pi4.i11 = 0.0f;
-    pi4.Imax = 1.0f;
-    pi4.Imin = 0.0f;
+    pi_current4.sps = &pi_current4_sps;
+    pi_current4.css = &pi_current4_css;
+    pi_current4.Kp = 0.001f;
+    pi_current4.Ki = 0.0001f;
+    pi_current4.i10 = 0.0f;
+    pi_current4.Umax = 1.0f;
+    pi_current4.Umin = 0.0f;
+    pi_current4.i6 = 1.0f;
+    pi_current4.i11 = 0.0f;
+    pi_current4.Imax = 1.0f;
+    pi_current4.Imin = 0.0f;
 }
 void CONTROLLER_init(){
-    pi1_init();
-    pi2_init();
-    pi3_init();
-    pi4_init();
+    pi_current1_init();
+    pi_current2_init();
+    pi_current3_init();
+    pi_current4_init();
 }
 
 void FFR_init()

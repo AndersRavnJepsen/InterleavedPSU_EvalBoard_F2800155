@@ -134,6 +134,7 @@ main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f28
 main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_can.h
 main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_dcc.h
 main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_lin.h
+main.obj: ../Config.h
 
 ../main.c:
 
@@ -402,4 +403,6 @@ C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_can.
 C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_dcc.h:
 
 C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_lin.h:
+
+../Config.h:
 

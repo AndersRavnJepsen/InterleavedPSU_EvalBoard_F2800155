@@ -50,7 +50,11 @@ void Board_init()
 	PinMux_init();
 	SYSCTL_init();
 	SYNC_init();
+	ASYSCTL_init();
+	ADC_init();
+	CMPSSLITE_init();
 	EPWM_init();
+	EPWMXBAR_init();
 	GPIO_init();
 
 	EDIS;
@@ -67,6 +71,25 @@ void PinMux_init()
 	// PinMux for modules assigned to CPU1
 	//
 	
+	//
+	// ANALOG -> myANALOGPinMux0 Pinmux
+	//
+	// Analog PinMux for A15/C7
+	GPIO_setPinConfig(GPIO_233_GPIO233);
+	// AIO -> Analog mode selected
+	GPIO_setAnalogMode(233, GPIO_ANALOG_ENABLED);
+	// Analog PinMux for A2/C9, GPIO224
+	GPIO_setPinConfig(GPIO_224_GPIO224);
+	// AGPIO -> Analog mode selected
+	GPIO_setAnalogMode(224, GPIO_ANALOG_ENABLED);
+	// Analog PinMux for A3/C5, GPIO242
+	GPIO_setPinConfig(GPIO_242_GPIO242);
+	// AGPIO -> Analog mode selected
+	GPIO_setAnalogMode(242, GPIO_ANALOG_ENABLED);
+	// Analog PinMux for C4/A14
+	GPIO_setPinConfig(GPIO_239_GPIO239);
+	// AIO -> Analog mode selected
+	GPIO_setAnalogMode(239, GPIO_ANALOG_ENABLED);
 	//
 	// EPWM2 -> ePWM2 Pinmux
 	//
@@ -120,6 +143,237 @@ void PinMux_init()
 
 //*****************************************************************************
 //
+// ADC Configurations
+//
+//*****************************************************************************
+void ADC_init(){
+	ADC_A_init();
+}
+
+void ADC_A_init(){
+	//
+	// ADC Initialization: Write ADC configurations and power up the ADC
+	//
+	// Set the analog voltage reference selection and ADC module's offset trims.
+	// This function sets the analog voltage reference to internal (with the reference voltage of 1.65V or 2.5V) or external for ADC
+	// which is same as ASysCtl APIs.
+	//
+	ADC_setVREF(ADC_A_BASE, ADC_REFERENCE_EXTERNAL, ADC_REFERENCE_3_3V);
+	//
+	// Configures the analog-to-digital converter module prescaler.
+	//
+	ADC_setPrescaler(ADC_A_BASE, ADC_CLK_DIV_2_0);
+	//
+	// Sets the timing of the end-of-conversion pulse
+	//
+	ADC_setInterruptPulseMode(ADC_A_BASE, ADC_PULSE_END_OF_CONV);
+	//
+	// Powers up the analog-to-digital converter core.
+	//
+	ADC_enableConverter(ADC_A_BASE);
+	//
+	// Delay for 1ms to allow ADC time to power up
+	//
+	DEVICE_DELAY_US(500);
+	//
+	// SOC Configuration: Setup ADC EPWM channel and trigger settings
+	//
+	// Disables SOC burst mode.
+	//
+	ADC_disableBurstMode(ADC_A_BASE);
+	//
+	// Sets the priority mode of the SOCs.
+	//
+	ADC_setSOCPriority(ADC_A_BASE, ADC_PRI_ALL_ROUND_ROBIN);
+	//
+	// Start of Conversion 1 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 1
+	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
+	//	  	Channel			: ADC_CH_ADCIN3
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC_A_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN3, 15U);
+	ADC_setInterruptSOCTrigger(ADC_A_BASE, ADC_SOC_NUMBER1, ADC_INT_SOC_TRIGGER_NONE);
+	//
+	// Start of Conversion 2 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 2
+	//	  	Trigger			: ADC_TRIGGER_EPWM2_SOCA
+	//	  	Channel			: ADC_CH_ADCIN2
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC_A_BASE, ADC_SOC_NUMBER2, ADC_TRIGGER_EPWM2_SOCA, ADC_CH_ADCIN2, 15U);
+	ADC_setInterruptSOCTrigger(ADC_A_BASE, ADC_SOC_NUMBER2, ADC_INT_SOC_TRIGGER_NONE);
+	//
+	// Start of Conversion 3 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 3
+	//	  	Trigger			: ADC_TRIGGER_EPWM3_SOCA
+	//	  	Channel			: ADC_CH_ADCIN15
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC_A_BASE, ADC_SOC_NUMBER3, ADC_TRIGGER_EPWM3_SOCA, ADC_CH_ADCIN15, 15U);
+	ADC_setInterruptSOCTrigger(ADC_A_BASE, ADC_SOC_NUMBER3, ADC_INT_SOC_TRIGGER_NONE);
+	//
+	// Start of Conversion 4 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 4
+	//	  	Trigger			: ADC_TRIGGER_EPWM4_SOCA
+	//	  	Channel			: ADC_CH_ADCIN14
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC_A_BASE, ADC_SOC_NUMBER4, ADC_TRIGGER_EPWM4_SOCA, ADC_CH_ADCIN14, 15U);
+	ADC_setInterruptSOCTrigger(ADC_A_BASE, ADC_SOC_NUMBER4, ADC_INT_SOC_TRIGGER_NONE);
+	//
+	// ADC Interrupt 1 Configuration
+	// 		Source	: ADC_SOC_NUMBER4
+	// 		Interrupt Source: enabled
+	// 		Continuous Mode	: disabled
+	//
+	//
+	ADC_setInterruptSource(ADC_A_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER4);
+	ADC_clearInterruptStatus(ADC_A_BASE, ADC_INT_NUMBER1);
+	ADC_disableContinuousMode(ADC_A_BASE, ADC_INT_NUMBER1);
+	ADC_enableInterrupt(ADC_A_BASE, ADC_INT_NUMBER1);
+			
+	//
+	// PPB Configuration: Configure high and low limits detection for ADCPPB
+	//
+	// Post Processing Block 1 Configuration
+	// 		Configures a post-processing block (PPB) in the ADC.
+	// 		PPB Number				: 1
+	// 		SOC/EOC number			: 1
+	// 		Calibration Offset		: 0
+	// 		Reference Offset		: 4095
+	// 		Two's Complement		: Enabled
+	// 		Trip High Limit			: 0
+	// 		Trip Low Limit			: 0
+	// 		Clear PPB Event Flags	: Disabled
+	//
+	ADC_setupPPB(ADC_A_BASE, ADC_PPB_NUMBER1, ADC_SOC_NUMBER1);
+	ADC_disablePPBEvent(ADC_A_BASE, ADC_PPB_NUMBER1, (ADC_EVT_TRIPHI | ADC_EVT_TRIPLO | ADC_EVT_ZERO));
+	ADC_disablePPBEventInterrupt(ADC_A_BASE, ADC_PPB_NUMBER1, (ADC_EVT_TRIPHI | ADC_EVT_TRIPLO | ADC_EVT_ZERO));
+	ADC_setPPBCalibrationOffset(ADC_A_BASE, ADC_PPB_NUMBER1, 0);
+	ADC_setPPBReferenceOffset(ADC_A_BASE, ADC_PPB_NUMBER1, 4095);
+	ADC_enablePPBTwosComplement(ADC_A_BASE, ADC_PPB_NUMBER1);
+	ADC_setPPBTripLimits(ADC_A_BASE, ADC_PPB_NUMBER1, 0, 0);
+	ADC_disablePPBEventCBCClear(ADC_A_BASE, ADC_PPB_NUMBER1);
+}
+
+
+//*****************************************************************************
+//
+// ASYSCTL Configurations
+//
+//*****************************************************************************
+void ASYSCTL_init(){
+	//
+	// asysctl initialization
+	//
+	// Disables the temperature sensor output to the ADC.
+	//
+	ASysCtl_disableTemperatureSensor();
+	//
+	// Set the analog voltage reference selection to external.
+	//
+	ASysCtl_setAnalogReferenceExternal( ASYSCTL_VREFHI );
+}
+
+//*****************************************************************************
+//
+// CMPSS-LITE Configurations
+//
+//*****************************************************************************
+void CMPSSLITE_init(){
+	cmpss3_init();
+}
+
+void cmpss3_init(){
+    //
+    // Select the value for CMP3HPMXSEL.
+    //
+    ASysCtl_selectCMPHPMux(ASYSCTL_CMPHPMUX_SELECT_3,3U);
+    //
+    // Select the value for CMP3LPMXSEL.
+    //
+    ASysCtl_selectCMPLPMux(ASYSCTL_CMPLPMUX_SELECT_3,4U);
+    //
+    // Sets the configuration for the high comparator.
+    //
+    CMPSSLITE_configHighComparator(cmpss3_BASE,(CMPSS_INSRC_DAC | CMPSS_INV_INVERTED));
+    //
+    // Sets the configuration for the low comparator.
+    //
+    CMPSSLITE_configLowComparator(cmpss3_BASE,(CMPSS_INSRC_DAC));
+    //
+    // Sets the configuration for the internal comparator DACs.
+    //
+    CMPSSLITE_configDAC(cmpss3_BASE, CMPSS_DACVAL_SYSCLK);
+    //
+    // Sets the value of the internal DAC of the high comparator.
+    //
+    CMPSSLITE_setDACValueHigh(cmpss3_BASE,2000U);
+    //
+    // Sets the value of the internal DAC of the low comparator.
+    //
+    CMPSSLITE_setDACValueLow(cmpss3_BASE,0U);
+    //
+    //  Configures the digital filter of the high comparator.
+    //
+    CMPSSLITE_configFilterHigh(cmpss3_BASE, 0U, 8U, 6U);
+    //
+    // Configures the digital filter of the low comparator.
+    //
+    CMPSSLITE_configFilterLow(cmpss3_BASE, 0U, 1U, 1U);
+    //
+    // Sets the comparator hysteresis settings.
+    //
+    CMPSSLITE_setHysteresis(cmpss3_BASE,0U);
+    //
+    // Disables reset of HIGH comparator digital filter output latch on PWMSYNC
+    //
+    CMPSSLITE_disableLatchResetOnPWMSYNCHigh(cmpss3_BASE);
+    //
+    // Disables reset of LOW comparator digital filter output latch on PWMSYNC
+    //
+    CMPSSLITE_disableLatchResetOnPWMSYNCLow(cmpss3_BASE);
+    //
+    // Sets the ePWM module blanking signal that holds trip in reset.
+    //
+    CMPSSLITE_configBlanking(cmpss3_BASE,1U);
+    //
+    // Disables an ePWM blanking signal from holding trip in reset.
+    //
+    CMPSSLITE_disableBlanking(cmpss3_BASE);
+    //
+    // Configures whether or not the digital filter latches are reset by PWMSYNC
+    //
+    CMPSSLITE_configLatchOnPWMSYNC(cmpss3_BASE,false,false);
+    //
+    // Enables the CMPSSLITE module.
+    //
+    CMPSSLITE_enableModule(cmpss3_BASE);
+    //
+    // Delay for CMPSSLITE DAC to power up.
+    //
+    DEVICE_DELAY_US(500);
+}
+
+//*****************************************************************************
+//
 // EPWM Configurations
 //
 //*****************************************************************************
@@ -159,6 +413,8 @@ void EPWM_init(){
     EPWM_disableRisingEdgeDelayCountShadowLoadMode(ePWM2_BASE);	
     EPWM_setFallingEdgeDelayCountShadowLoadMode(ePWM2_BASE, EPWM_FED_LOAD_ON_CNTR_ZERO);	
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(ePWM2_BASE);	
+    EPWM_setDigitalCompareEventSyncMode(ePWM2_BASE, EPWM_DC_MODULE_A, EPWM_DC_EVENT_1, EPWM_DC_EVENT_INPUT_NOT_SYNCED);	
+    EPWM_enableDigitalCompareEdgeFilter(ePWM2_BASE);	
     EPWM_enableADCTrigger(ePWM2_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(ePWM2_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
     EPWM_setADCTriggerEventPrescale(ePWM2_BASE, EPWM_SOC_A, 1);	
@@ -273,9 +529,35 @@ void EPWM_init(){
     EPWM_disableRisingEdgeDelayCountShadowLoadMode(ePWM1_BASE);	
     EPWM_setFallingEdgeDelayCountShadowLoadMode(ePWM1_BASE, EPWM_FED_LOAD_ON_CNTR_ZERO);	
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(ePWM1_BASE);	
+    EPWM_enableTripZoneAdvAction(ePWM1_BASE);	
+    EPWM_setTripZoneAction(ePWM1_BASE, EPWM_TZ_ACTION_EVENT_DCAEVT1, EPWM_TZ_ACTION_LOW);	
+    EPWM_setTripZoneAdvAction(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_TZA_D, EPWM_TZ_ADV_ACTION_LOW);	
+    EPWM_setTripZoneAdvAction(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_TZA_U, EPWM_TZ_ADV_ACTION_LOW);	
+    EPWM_setTripZoneAdvDigitalCompareActionA(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_U, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionA(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_D, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_enableTripZoneSignals(ePWM1_BASE, EPWM_TZ_SIGNAL_DCAEVT1);	
+    EPWM_selectDigitalCompareTripInput(ePWM1_BASE, EPWM_DC_TRIP_TRIPIN4, EPWM_DC_TYPE_DCAH);	
+    EPWM_selectDigitalCompareTripInput(ePWM1_BASE, EPWM_DC_TRIP_TRIPIN4, EPWM_DC_TYPE_DCAL);	
+    EPWM_setTripZoneDigitalCompareEventCondition(ePWM1_BASE, EPWM_TZ_DC_OUTPUT_A1, EPWM_TZ_EVENT_DCXH_HIGH);	
+    EPWM_setDigitalCompareEventSyncMode(ePWM1_BASE, EPWM_DC_MODULE_A, EPWM_DC_EVENT_1, EPWM_DC_EVENT_INPUT_NOT_SYNCED);	
     EPWM_enableADCTrigger(ePWM1_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(ePWM1_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
     EPWM_setADCTriggerEventPrescale(ePWM1_BASE, EPWM_SOC_A, 1);	
+}
+
+//*****************************************************************************
+//
+// EPWMXBAR Configurations
+//
+//*****************************************************************************
+void EPWMXBAR_init(){
+	epwmxbar0_init();
+}
+
+void epwmxbar0_init(){
+		
+	XBAR_setEPWMMuxConfig(epwmxbar0, XBAR_EPWM_MUX04_CMPSS3_CTRIPH);
+	XBAR_enableEPWMMux(epwmxbar0, XBAR_MUX04);
 }
 
 //*****************************************************************************

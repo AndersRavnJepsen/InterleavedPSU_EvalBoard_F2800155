@@ -7,6 +7,11 @@
    {
       "directory" : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM",
       "command"   : "clang++ -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include\" -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include\" -I\"C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/\" -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155\" -I\"C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -DDEBUG -DRAM -D_DUAL_HEADERS -DCPU1 -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg\" -DF280015x=1 -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include\" -xc",
+      "file"      : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/main.c"
+   },
+   {
+      "directory" : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM",
+      "command"   : "clang++ -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include\" -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include\" -I\"C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/\" -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155\" -I\"C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -DDEBUG -DRAM -D_DUAL_HEADERS -DCPU1 -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg\" -DF280015x=1 -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include\" -xc",
       "file"      : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg/board.c"
    },
    {
@@ -18,10 +23,5 @@
       "directory" : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM",
       "command"   : "clang++ -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include\" -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include\" -I\"C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/\" -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155\" -I\"C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -DDEBUG -DRAM -D_DUAL_HEADERS -DCPU1 -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg\" -DF280015x=1 -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include\" -xc",
       "file"      : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg/device.c"
-   },
-   {
-      "directory" : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM",
-      "command"   : "clang++ -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include\" -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include\" -I\"C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/\" -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155\" -I\"C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include\" -DDEBUG -DRAM -D_DUAL_HEADERS -DCPU1 -I\"C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg\" -DF280015x=1 -I\"C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/include\" -I\"C:/ti/C2000Ware_6_00_00_00/libraries/math/FPUfastRTS/c28/include\" -xc",
-      "file"      : "C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/main.c"
    }
 ]

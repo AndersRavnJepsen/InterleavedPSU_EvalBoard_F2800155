@@ -59,6 +59,10 @@ extern "C"
 //*****************************************************************************
 
 //
+// ANALOG -> myANALOGPinMux0 Pinmux
+//
+
+//
 // EPWM2 -> ePWM2 Pinmux
 //
 //
@@ -128,6 +132,52 @@ extern "C"
 
 //*****************************************************************************
 //
+// ADC Configurations
+//
+//*****************************************************************************
+#define ADC_A_BASE ADCA_BASE
+#define ADC_A_RESULT_BASE ADCARESULT_BASE
+#define ADC_A_SOC1 ADC_SOC_NUMBER1
+#define ADC_A_FORCE_SOC1 ADC_FORCE_SOC1
+#define ADC_A_SAMPLE_WINDOW_SOC1 125.00000000000001
+#define ADC_A_TRIGGER_SOURCE_SOC1 ADC_TRIGGER_EPWM1_SOCA
+#define ADC_A_CHANNEL_SOC1 ADC_CH_ADCIN3
+#define ADC_A_SOC2 ADC_SOC_NUMBER2
+#define ADC_A_FORCE_SOC2 ADC_FORCE_SOC2
+#define ADC_A_SAMPLE_WINDOW_SOC2 125.00000000000001
+#define ADC_A_TRIGGER_SOURCE_SOC2 ADC_TRIGGER_EPWM2_SOCA
+#define ADC_A_CHANNEL_SOC2 ADC_CH_ADCIN2
+#define ADC_A_SOC3 ADC_SOC_NUMBER3
+#define ADC_A_FORCE_SOC3 ADC_FORCE_SOC3
+#define ADC_A_SAMPLE_WINDOW_SOC3 125.00000000000001
+#define ADC_A_TRIGGER_SOURCE_SOC3 ADC_TRIGGER_EPWM3_SOCA
+#define ADC_A_CHANNEL_SOC3 ADC_CH_ADCIN15
+#define ADC_A_SOC4 ADC_SOC_NUMBER4
+#define ADC_A_FORCE_SOC4 ADC_FORCE_SOC4
+#define ADC_A_SAMPLE_WINDOW_SOC4 125.00000000000001
+#define ADC_A_TRIGGER_SOURCE_SOC4 ADC_TRIGGER_EPWM4_SOCA
+#define ADC_A_CHANNEL_SOC4 ADC_CH_ADCIN14
+#define ADC_A_PPB1 ADC_PPB_NUMBER1
+#define ADC_A_SOC_PPB1 ADC_SOC_NUMBER1
+void ADC_A_init();
+
+
+//*****************************************************************************
+//
+// ASYSCTL Configurations
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
+// CMPSS-LITE Configurations
+//
+//*****************************************************************************
+#define cmpss3_BASE CMPSSLITE3_BASE
+void cmpss3_init();
+
+//*****************************************************************************
+//
 // EPWM Configurations
 //
 //*****************************************************************************
@@ -182,7 +232,17 @@ extern "C"
 #define ePWM1_DBFED 0
 #define ePWM1_TZA_ACTION EPWM_TZ_ACTION_HIGH_Z
 #define ePWM1_TZB_ACTION EPWM_TZ_ACTION_HIGH_Z
+#define ePWM1_OSHT_SOURCES EPWM_TZ_SIGNAL_DCAEVT1
 #define ePWM1_INTERRUPT_SOURCE EPWM_INT_TBCTR_DISABLED
+
+//*****************************************************************************
+//
+// EPWMXBAR Configurations
+//
+//*****************************************************************************
+void epwmxbar0_init();
+#define epwmxbar0 XBAR_TRIP4
+#define epwmxbar0_ENABLED_MUXES (XBAR_MUX04)
 
 //*****************************************************************************
 //
@@ -210,7 +270,11 @@ void gpio28_init();
 //
 //*****************************************************************************
 void	Board_init();
+void	ADC_init();
+void	ASYSCTL_init();
+void	CMPSSLITE_init();
 void	EPWM_init();
+void	EPWMXBAR_init();
 void	GPIO_init();
 void	SYNC_init();
 void	SYSCTL_init();
