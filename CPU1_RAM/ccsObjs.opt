@@ -1,5 +1,6 @@
 "./syscfg/board.obj"
 "./syscfg/device.obj"
+"./syscfg/device_cmd.obj"
 "./syscfg/c2000ware_libraries.obj"
 "./f280015x_codestartbranch.obj"
 "./DCL_clamp_C1.obj"
@@ -17,10 +18,11 @@
 "./DCL_PI_C7.obj"
 "./DCL_PID_C1.obj"
 "./DCL_PID_C4.obj"
+"./PSU.obj"
 "./f280015x_globalvariabledefs.obj"
 "./main.obj"
-"../280015x_generic_ram_lnk.cmd"
 "C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/ccs/Debug/driverlib.lib"
 "C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/cmd/f280015x_headers_nonBIOS.cmd"
+-l"syscfg/device_cmd.cmd"
 -lc2000ware_libraries.cmd.genlibs
 -llibc.a

@@ -34,6 +34,8 @@ const controller3    = controller.addInstance();
 const controller4    = controller.addInstance();
 const FPUfastRTS     = scripting.addModule("/libraries/math/FPUfastRTS/FPUfastRTS.js", {}, false);
 const FPUfastRTS1    = FPUfastRTS.addInstance();
+const CMD            = scripting.addModule("/utilities/cmd_tool/cmd_syscfg/source/CMD");
+const CMD1           = CMD.addInstance();
 
 /**
  * Write custom configuration values to the imported modules.
@@ -77,7 +79,7 @@ cmpss_lite1.highCompInvert      = true;
 cmpss_lite1.enableModule        = true;
 cmpss_lite1.sampleWindowHigh    = 8;
 cmpss_lite1.thresholdHigh       = 6;
-cmpss_lite1.dacValHigh          = 2000;
+cmpss_lite1.dacValHigh          = 1800;
 
 analog1.$name            = "myANALOGPinMux0";
 adc1.analog              = analog1;
@@ -104,7 +106,6 @@ epwm1.epwmEventTrigger_EPWM_SOC_A_triggerEventPrescalar             = "1";
 epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_ZERO         = "EPWM_AQ_OUTPUT_HIGH";
 epwm1.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_PERIOD       = "EPWM_AQ_OUTPUT_LOW";
 epwm1.epwmCounterCompare_cmpA                                       = 540;
-epwm1.epwmDigitalCompare_useEdgeFilter                              = true;
 epwm1.epwmDigitalCompare_EPWM_DC_MODULE_A_EPWM_DC_EVENT_1_eventSync = "EPWM_DC_EVENT_INPUT_NOT_SYNCED";
 epwm1.epwm.$assign                                                  = "EPWM2";
 epwm1.epwm.epwm_aPin.$assign                                        = "GPIO41";
@@ -184,12 +185,21 @@ epwm4.epwmDigitalCompare_EPWM_DC_TYPE_DCAH                          = "EPWM_DC_T
 epwm4.epwmDigitalCompare_EPWM_DC_TYPE_DCAL                          = "EPWM_DC_TRIP_TRIPIN4";
 epwm4.epwmTripZone_EPWM_TZ_ACTION_EVENT_DCAEVT1                     = "EPWM_TZ_ACTION_LOW";
 epwm4.epwmTripZone_useAdvancedEPWMTripZoneActions                   = true;
-epwm4.epwmTripZone_oneShotSource                                    = ["EPWM_TZ_SIGNAL_DCAEVT1"];
 epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_TZA_D                   = "EPWM_TZ_ADV_ACTION_LOW";
 epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_TZA_U                   = "EPWM_TZ_ADV_ACTION_LOW";
 epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_U_A             = "EPWM_TZ_ADV_ACTION_DISABLE";
 epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_D_A             = "EPWM_TZ_ADV_ACTION_DISABLE";
-epwm4.epwmCounterCompare_cmpA                                       = 450;
+epwm4.epwmCounterCompare_cmpA                                       = 540;
+epwm4.epwmDigitalCompare_EPWM_DC_MODULE_A_EPWM_DC_EVENT_2_eventSync = "EPWM_DC_EVENT_INPUT_NOT_SYNCED";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_TZB_D                   = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_TZB_U                   = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_U_A             = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_D_A             = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_U_B             = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_D_B             = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_U_B             = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_D_B             = "EPWM_TZ_ADV_ACTION_DISABLE";
+epwm4.epwmTripZone_oneShotSource                                    = ["EPWM_TZ_SIGNAL_DCAEVT1"];
 epwm4.epwm.$assign                                                  = "EPWM1";
 epwm4.epwm.epwm_aPin.$assign                                        = "GPIO4";
 epwm4.epwm.epwm_bPin.$assign                                        = "GPIO5";
@@ -232,6 +242,30 @@ controller4.Imin             = "0.0f";
 controller4.$name            = "pi_current4";
 
 FPUfastRTS1.$name = "fpu";
+
+CMD.activateCMD = true;
+
+CMD1.$name                                 = "CMD0";
+CMD1.sectionMemory_ramfunc                 = ["RAMM0"];
+CMD1.sectionMemory_cinit                   = ["RAMM0"];
+CMD1.sectionMemory_switch                  = ["RAMM0"];
+CMD1.sectionMemory_stack                   = ["RAMM1"];
+CMD1.sectionMemory_init_array              = ["RAMM0"];
+CMD1.sectionMemory_text                    = ["RAMLS_ALL"];
+CMD1.sectionMemory_bss                     = ["RAMLS_ALL"];
+CMD1.sectionMemory_const                   = ["RAMLS_ALL"];
+CMD1.sectionMemory_data                    = ["RAMLS_ALL"];
+CMD1.sectionMemory_sysmem                  = ["RAMLS_ALL"];
+CMD1.RAMLSmemoryCombination.create(1);
+CMD1.RAMLSmemoryCombination[0].$name       = "RAMLS_ALL";
+CMD1.RAMLSmemoryCombination[0].combination = ["RAMLS0","RAMLS1"];
+CMD1.userSection.create(2);
+CMD1.userSection[0].$name                  = "DCL_funcs";
+CMD1.userSection[0].sectionName            = "dclfuncs";
+CMD1.userSection[0].sectionMemory          = ["RAMLS_ALL"];
+CMD1.userSection[1].$name                  = "CODESTART";
+CMD1.userSection[1].sectionName            = "codestart";
+CMD1.userSection[1].sectionMemory          = ["RAMM0"];
 
 /**
  * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future

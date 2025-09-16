@@ -6,12 +6,13 @@ SHELL = cmd.exe
 
 CG_TOOL_ROOT := C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS
 
-GEN_OPTS__FLAG := --cmd_file="syscfg/board.opt" --cmd_file="syscfg/c2000ware_libraries.opt" 
-GEN_CMDS__FLAG := 
+GEN_OPTS__FLAG := --cmd_file="syscfg/board.opt" --cmd_file="syscfg/device_cmd.opt" --cmd_file="syscfg/c2000ware_libraries.opt" 
+GEN_CMDS__FLAG := -l"syscfg/device_cmd.cmd" 
 
 ORDERED_OBJS += \
 "./syscfg/board.obj" \
 "./syscfg/device.obj" \
+"./syscfg/device_cmd.obj" \
 "./syscfg/c2000ware_libraries.obj" \
 "./f280015x_codestartbranch.obj" \
 "./DCL_clamp_C1.obj" \
@@ -29,9 +30,9 @@ ORDERED_OBJS += \
 "./DCL_PI_C7.obj" \
 "./DCL_PID_C1.obj" \
 "./DCL_PID_C4.obj" \
+"./PSU.obj" \
 "./f280015x_globalvariabledefs.obj" \
 "./main.obj" \
-"../280015x_generic_ram_lnk.cmd" \
 "C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/ccs/Debug/driverlib.lib" \
 "C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/cmd/f280015x_headers_nonBIOS.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -165,8 +166,8 @@ InterleavedPSU_EvalBoard_F2800155.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMD
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "syscfg\board.obj" "syscfg\device.obj" "syscfg\c2000ware_libraries.obj" "f280015x_codestartbranch.obj" "DCL_clamp_C1.obj" "DCL_DF11_C1.obj" "DCL_DF13_C1.obj" "DCL_DF13_C2C3.obj" "DCL_DF22_C1.obj" "DCL_DF22_C2C3.obj" "DCL_DF23_C1.obj" "DCL_DF23_C2C3.obj" "DCL_error.obj" "DCL_futils.obj" "DCL_PI_C1.obj" "DCL_PI_C4.obj" "DCL_PI_C7.obj" "DCL_PID_C1.obj" "DCL_PID_C4.obj" "f280015x_globalvariabledefs.obj" "main.obj" 
-	-$(RM) "syscfg\board.d" "syscfg\device.d" "syscfg\c2000ware_libraries.d" "DCL_error.d" "f280015x_globalvariabledefs.d" "main.d" 
+	-$(RM) "syscfg\board.obj" "syscfg\device.obj" "syscfg\device_cmd.obj" "syscfg\c2000ware_libraries.obj" "f280015x_codestartbranch.obj" "DCL_clamp_C1.obj" "DCL_DF11_C1.obj" "DCL_DF13_C1.obj" "DCL_DF13_C2C3.obj" "DCL_DF22_C1.obj" "DCL_DF22_C2C3.obj" "DCL_DF23_C1.obj" "DCL_DF23_C2C3.obj" "DCL_error.obj" "DCL_futils.obj" "DCL_PI_C1.obj" "DCL_PI_C4.obj" "DCL_PI_C7.obj" "DCL_PID_C1.obj" "DCL_PID_C4.obj" "PSU.obj" "f280015x_globalvariabledefs.obj" "main.obj" 
+	-$(RM) "syscfg\board.d" "syscfg\device.d" "syscfg\device_cmd.d" "syscfg\c2000ware_libraries.d" "DCL_error.d" "PSU.d" "f280015x_globalvariabledefs.d" "main.d" 
 	-$(RM) "f280015x_codestartbranch.d" "DCL_clamp_C1.d" "DCL_DF11_C1.d" "DCL_DF13_C1.d" "DCL_DF13_C2C3.d" "DCL_DF22_C1.d" "DCL_DF22_C2C3.d" "DCL_DF23_C1.d" "DCL_DF23_C2C3.d" "DCL_futils.d" "DCL_PI_C1.d" "DCL_PI_C4.d" "DCL_PI_C7.d" "DCL_PID_C1.d" "DCL_PID_C4.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)
 	-@echo 'Finished clean'

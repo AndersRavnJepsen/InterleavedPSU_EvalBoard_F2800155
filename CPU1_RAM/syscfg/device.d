@@ -86,6 +86,8 @@ syscfg/device.obj: C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/versi
 syscfg/device.obj: C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/driver_inclusive_terminology_mapping.h
 syscfg/device.obj: syscfg/clocktree.h
 syscfg/device.obj: syscfg/board.h
+syscfg/device.obj: syscfg/device_cmd.h
+syscfg/device.obj: C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/cpy_tbl.h
 
 syscfg/device.c:
 
@@ -258,4 +260,8 @@ C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/driver_inclusive_termino
 syscfg/clocktree.h:
 
 syscfg/board.h:
+
+syscfg/device_cmd.h:
+
+C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include/cpy_tbl.h:
 

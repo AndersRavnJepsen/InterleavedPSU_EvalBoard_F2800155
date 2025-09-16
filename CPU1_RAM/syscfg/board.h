@@ -224,7 +224,7 @@ void cmpss3_init();
 #define ePWM1_TBPRD 600
 #define ePWM1_COUNTER_MODE EPWM_COUNTER_MODE_UP_DOWN
 #define ePWM1_TBPHS 0
-#define ePWM1_CMPA 450
+#define ePWM1_CMPA 540
 #define ePWM1_CMPB 1
 #define ePWM1_CMPC 0
 #define ePWM1_CMPD 0

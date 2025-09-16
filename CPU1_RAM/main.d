@@ -135,6 +135,17 @@ main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f28
 main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_dcc.h
 main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_lin.h
 main.obj: ../Config.h
+main.obj: ../PSU.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f28x_project.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_examples.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_globalprototypes.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_adc_defines.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_cputimervars.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_gpio_defines.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_pie_defines.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_sysctrl_defines.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_epwm_defines.h
+main.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_defaultisr.h
 
 ../main.c:
 
@@ -405,4 +416,26 @@ C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_dcc.
 C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include/f280015x_lin.h:
 
 ../Config.h:
+
+../PSU.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f28x_project.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_examples.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_globalprototypes.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_adc_defines.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_cputimervars.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_gpio_defines.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_pie_defines.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_sysctrl_defines.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_epwm_defines.h:
+
+C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include/f280015x_defaultisr.h:
 

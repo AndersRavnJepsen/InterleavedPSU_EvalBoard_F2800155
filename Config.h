@@ -7,6 +7,9 @@
 #define INITIAL_DUTY_CYCLE 10U  // Initial duty cycle in percent.
 #define INITIAL_COMPARE_VALUE  (INITIAL_PERIOD_COUNT - ((INITIAL_PERIOD_COUNT * INITIAL_DUTY_CYCLE) / 100U))    // Calculate initial compare value from above values.
 
-#define INITIAL_SETPOINT 0.0f // Setpoint is for the ADC measurement. (0 - 4095)
+#define INITIAL_SETPOINT 100.0f // Setpoint is for the ADC measurement. (0 - 4095)
+
+#define INITIAL_SOFTSTART_CMPSS_VALUE 3800U  // Initial softstart ramp starting point.
+#define INITIAL_ONESHOT_CMPSS_VALUE 1800U   // Mainly used for safety during development. Later it will continue doing OCP using the CMPSS
 
 #endif // __CONFIG_H__

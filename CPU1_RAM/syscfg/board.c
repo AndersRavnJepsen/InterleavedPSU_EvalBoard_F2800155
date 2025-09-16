@@ -325,7 +325,7 @@ void cmpss3_init(){
     //
     // Sets the value of the internal DAC of the high comparator.
     //
-    CMPSSLITE_setDACValueHigh(cmpss3_BASE,2000U);
+    CMPSSLITE_setDACValueHigh(cmpss3_BASE,1800U);
     //
     // Sets the value of the internal DAC of the low comparator.
     //
@@ -414,7 +414,6 @@ void EPWM_init(){
     EPWM_setFallingEdgeDelayCountShadowLoadMode(ePWM2_BASE, EPWM_FED_LOAD_ON_CNTR_ZERO);	
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(ePWM2_BASE);	
     EPWM_setDigitalCompareEventSyncMode(ePWM2_BASE, EPWM_DC_MODULE_A, EPWM_DC_EVENT_1, EPWM_DC_EVENT_INPUT_NOT_SYNCED);	
-    EPWM_enableDigitalCompareEdgeFilter(ePWM2_BASE);	
     EPWM_enableADCTrigger(ePWM2_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(ePWM2_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
     EPWM_setADCTriggerEventPrescale(ePWM2_BASE, EPWM_SOC_A, 1);	
@@ -506,7 +505,7 @@ void EPWM_init(){
     EPWM_setPhaseShift(ePWM1_BASE, 0);	
     EPWM_setSyncInPulseSource(ePWM1_BASE, EPWM_SYNC_IN_PULSE_SRC_DISABLE);	
     EPWM_enableSyncOutPulseSource(ePWM1_BASE, EPWM_SYNC_OUT_PULSE_ON_CNTR_ZERO | EPWM_SYNC_OUT_PULSE_ON_SOFTWARE);	
-    EPWM_setCounterCompareValue(ePWM1_BASE, EPWM_COUNTER_COMPARE_A, 450);	
+    EPWM_setCounterCompareValue(ePWM1_BASE, EPWM_COUNTER_COMPARE_A, 540);	
     EPWM_setCounterCompareShadowLoadMode(ePWM1_BASE, EPWM_COUNTER_COMPARE_A, EPWM_COMP_LOAD_ON_CNTR_ZERO);	
     EPWM_setCounterCompareValue(ePWM1_BASE, EPWM_COUNTER_COMPARE_B, 1);	
     EPWM_setCounterCompareShadowLoadMode(ePWM1_BASE, EPWM_COUNTER_COMPARE_B, EPWM_COMP_LOAD_ON_CNTR_ZERO);	
@@ -531,15 +530,24 @@ void EPWM_init(){
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(ePWM1_BASE);	
     EPWM_enableTripZoneAdvAction(ePWM1_BASE);	
     EPWM_setTripZoneAction(ePWM1_BASE, EPWM_TZ_ACTION_EVENT_DCAEVT1, EPWM_TZ_ACTION_LOW);	
+    EPWM_setTripZoneAdvAction(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_TZB_D, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvAction(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_TZB_U, EPWM_TZ_ADV_ACTION_DISABLE);	
     EPWM_setTripZoneAdvAction(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_TZA_D, EPWM_TZ_ADV_ACTION_LOW);	
     EPWM_setTripZoneAdvAction(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_TZA_U, EPWM_TZ_ADV_ACTION_LOW);	
     EPWM_setTripZoneAdvDigitalCompareActionA(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_U, EPWM_TZ_ADV_ACTION_DISABLE);	
     EPWM_setTripZoneAdvDigitalCompareActionA(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_D, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionA(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_U, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionA(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_D, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionB(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_U, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionB(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT1_D, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionB(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_U, EPWM_TZ_ADV_ACTION_DISABLE);	
+    EPWM_setTripZoneAdvDigitalCompareActionB(ePWM1_BASE, EPWM_TZ_ADV_ACTION_EVENT_DCxEVT2_D, EPWM_TZ_ADV_ACTION_DISABLE);	
     EPWM_enableTripZoneSignals(ePWM1_BASE, EPWM_TZ_SIGNAL_DCAEVT1);	
     EPWM_selectDigitalCompareTripInput(ePWM1_BASE, EPWM_DC_TRIP_TRIPIN4, EPWM_DC_TYPE_DCAH);	
     EPWM_selectDigitalCompareTripInput(ePWM1_BASE, EPWM_DC_TRIP_TRIPIN4, EPWM_DC_TYPE_DCAL);	
     EPWM_setTripZoneDigitalCompareEventCondition(ePWM1_BASE, EPWM_TZ_DC_OUTPUT_A1, EPWM_TZ_EVENT_DCXH_HIGH);	
     EPWM_setDigitalCompareEventSyncMode(ePWM1_BASE, EPWM_DC_MODULE_A, EPWM_DC_EVENT_1, EPWM_DC_EVENT_INPUT_NOT_SYNCED);	
+    EPWM_setDigitalCompareEventSyncMode(ePWM1_BASE, EPWM_DC_MODULE_A, EPWM_DC_EVENT_2, EPWM_DC_EVENT_INPUT_NOT_SYNCED);	
     EPWM_enableADCTrigger(ePWM1_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(ePWM1_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
     EPWM_setADCTriggerEventPrescale(ePWM1_BASE, EPWM_SOC_A, 1);	

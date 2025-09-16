@@ -6,7 +6,6 @@ SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CMD_SRCS += \
-../280015x_generic_ram_lnk.cmd \
 C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/cmd/f280015x_headers_nonBIOS.cmd 
 
 SYSCFG_SRCS += \
@@ -35,15 +34,23 @@ C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/source/DCL_PID_C4.asm
 C_SRCS += \
 ./syscfg/board.c \
 ./syscfg/device.c \
+./syscfg/device_cmd.c \
 ./syscfg/c2000ware_libraries.c \
 C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/source/DCL_error.c \
+../PSU.c \
 C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/source/f280015x_globalvariabledefs.c \
 ../main.c 
+
+GEN_CMDS += \
+./syscfg/device_cmd.cmd 
 
 GEN_FILES += \
 ./syscfg/board.c \
 ./syscfg/board.opt \
 ./syscfg/device.c \
+./syscfg/device_cmd.cmd \
+./syscfg/device_cmd.c \
+./syscfg/device_cmd.opt \
 ./syscfg/c2000ware_libraries.opt \
 ./syscfg/c2000ware_libraries.c 
 
@@ -53,18 +60,22 @@ GEN_MISC_DIRS += \
 C_DEPS += \
 ./syscfg/board.d \
 ./syscfg/device.d \
+./syscfg/device_cmd.d \
 ./syscfg/c2000ware_libraries.d \
 ./DCL_error.d \
+./PSU.d \
 ./f280015x_globalvariabledefs.d \
 ./main.d 
 
 GEN_OPTS += \
 ./syscfg/board.opt \
+./syscfg/device_cmd.opt \
 ./syscfg/c2000ware_libraries.opt 
 
 OBJS += \
 ./syscfg/board.obj \
 ./syscfg/device.obj \
+./syscfg/device_cmd.obj \
 ./syscfg/c2000ware_libraries.obj \
 ./f280015x_codestartbranch.obj \
 ./DCL_clamp_C1.obj \
@@ -82,6 +93,7 @@ OBJS += \
 ./DCL_PI_C7.obj \
 ./DCL_PID_C1.obj \
 ./DCL_PID_C4.obj \
+./PSU.obj \
 ./f280015x_globalvariabledefs.obj \
 ./main.obj 
 
@@ -110,6 +122,8 @@ GEN_MISC_FILES += \
 ./syscfg/epwm.dot \
 ./syscfg/device.h \
 ./syscfg/adc.dot \
+./syscfg/device_cmd.h \
+./syscfg/device_cmd.cmd.genlibs \
 ./syscfg/c2000ware_libraries.cmd.genlibs \
 ./syscfg/c2000ware_libraries.h \
 ./syscfg/clocktree.h 
@@ -120,6 +134,7 @@ GEN_MISC_DIRS__QUOTED += \
 OBJS__QUOTED += \
 "syscfg\board.obj" \
 "syscfg\device.obj" \
+"syscfg\device_cmd.obj" \
 "syscfg\c2000ware_libraries.obj" \
 "f280015x_codestartbranch.obj" \
 "DCL_clamp_C1.obj" \
@@ -137,6 +152,7 @@ OBJS__QUOTED += \
 "DCL_PI_C7.obj" \
 "DCL_PID_C1.obj" \
 "DCL_PID_C4.obj" \
+"PSU.obj" \
 "f280015x_globalvariabledefs.obj" \
 "main.obj" 
 
@@ -148,6 +164,8 @@ GEN_MISC_FILES__QUOTED += \
 "syscfg\epwm.dot" \
 "syscfg\device.h" \
 "syscfg\adc.dot" \
+"syscfg\device_cmd.h" \
+"syscfg\device_cmd.cmd.genlibs" \
 "syscfg\c2000ware_libraries.cmd.genlibs" \
 "syscfg\c2000ware_libraries.h" \
 "syscfg\clocktree.h" 
@@ -155,8 +173,10 @@ GEN_MISC_FILES__QUOTED += \
 C_DEPS__QUOTED += \
 "syscfg\board.d" \
 "syscfg\device.d" \
+"syscfg\device_cmd.d" \
 "syscfg\c2000ware_libraries.d" \
 "DCL_error.d" \
+"PSU.d" \
 "f280015x_globalvariabledefs.d" \
 "main.d" 
 
@@ -164,6 +184,9 @@ GEN_FILES__QUOTED += \
 "syscfg\board.c" \
 "syscfg\board.opt" \
 "syscfg\device.c" \
+"syscfg\device_cmd.cmd" \
+"syscfg\device_cmd.c" \
+"syscfg\device_cmd.opt" \
 "syscfg\c2000ware_libraries.opt" \
 "syscfg\c2000ware_libraries.c" 
 
@@ -190,8 +213,10 @@ SYSCFG_SRCS__QUOTED += \
 C_SRCS__QUOTED += \
 "./syscfg/board.c" \
 "./syscfg/device.c" \
+"./syscfg/device_cmd.c" \
 "./syscfg/c2000ware_libraries.c" \
 "C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/source/DCL_error.c" \
+"../PSU.c" \
 "C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/source/f280015x_globalvariabledefs.c" \
 "../main.c" 
 

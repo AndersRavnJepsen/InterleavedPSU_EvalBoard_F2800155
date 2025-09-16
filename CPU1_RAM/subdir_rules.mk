@@ -22,6 +22,11 @@ syscfg/epwm.dot: build-1298262865
 syscfg/device.c: build-1298262865
 syscfg/device.h: build-1298262865
 syscfg/adc.dot: build-1298262865
+syscfg/device_cmd.cmd: build-1298262865
+syscfg/device_cmd.c: build-1298262865
+syscfg/device_cmd.h: build-1298262865
+syscfg/device_cmd.opt: build-1298262865
+syscfg/device_cmd.cmd.genlibs: build-1298262865
 syscfg/c2000ware_libraries.cmd.genlibs: build-1298262865
 syscfg/c2000ware_libraries.opt: build-1298262865
 syscfg/c2000ware_libraries.c: build-1298262865
@@ -148,14 +153,14 @@ DCL_PID_C4.obj: C:/ti/C2000Ware_6_00_00_00/libraries/control/DCL/c28/source/DCL_
 	@echo 'Finished building: "$<"'
 	@echo ' '
 
-f280015x_globalvariabledefs.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/source/f280015x_globalvariabledefs.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+%.obj: ../%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	@echo 'Building file: "$<"'
 	@echo 'Invoking: C2000 Compiler'
 	"C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 --tmu_support=tmu0 -Ooff --include_path="C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include" --include_path="C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include" --include_path="C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/" --include_path="C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155" --include_path="C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include" --define=DEBUG --define=RAM --define=_DUAL_HEADERS --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --preproc_with_compile --preproc_dependency="$(basename $(<F)).d_raw" --include_path="C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg" $(GEN_OPTS__FLAG) "$<"
 	@echo 'Finished building: "$<"'
 	@echo ' '
 
-%.obj: ../%.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
+f280015x_globalvariabledefs.obj: C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/source/f280015x_globalvariabledefs.c $(GEN_OPTS) | $(GEN_FILES) $(GEN_MISC_FILES)
 	@echo 'Building file: "$<"'
 	@echo 'Invoking: C2000 Compiler'
 	"C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/bin/cl2000" -v28 -ml -mt --float_support=fpu32 --tmu_support=tmu0 -Ooff --include_path="C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/headers/include" --include_path="C:/ti/C2000Ware_6_00_00_00/device_support/f280015x/common/include" --include_path="C:/ti/C2000Ware_6_00_00_00/driverlib/f280015x/driverlib/" --include_path="C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155" --include_path="C:/ti/ccs2011/ccs/tools/compiler/ti-cgt-c2000_22.6.2.LTS/include" --define=DEBUG --define=RAM --define=_DUAL_HEADERS --define=CPU1 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi --preproc_with_compile --preproc_dependency="$(basename $(<F)).d_raw" --include_path="C:/Users/arj/workspace_ccstheia/InterleavedPSU_EvalBoard_F2800155/CPU1_RAM/syscfg" $(GEN_OPTS__FLAG) "$<"
