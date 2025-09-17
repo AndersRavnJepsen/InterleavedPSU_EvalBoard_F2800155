@@ -79,7 +79,7 @@ cmpss_lite1.highCompInvert      = true;
 cmpss_lite1.enableModule        = true;
 cmpss_lite1.sampleWindowHigh    = 8;
 cmpss_lite1.thresholdHigh       = 6;
-cmpss_lite1.dacValHigh          = 1800;
+cmpss_lite1.dacValHigh          = 1500;
 
 analog1.$name            = "myANALOGPinMux0";
 adc1.analog              = analog1;
@@ -127,6 +127,9 @@ epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_UP_CMPA   = "EPWM_AQ_OUTP
 epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_A_ON_TIMEBASE_DOWN_CMPA = "EPWM_AQ_OUTPUT_LOW";
 epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_ZERO      = "EPWM_AQ_OUTPUT_HIGH";
 epwm2.epwmActionQualifier_EPWM_AQ_OUTPUT_B_ON_TIMEBASE_PERIOD    = "EPWM_AQ_OUTPUT_LOW";
+epwm2.epwmEventTrigger_EPWM_SOC_A_triggerEnable                  = true;
+epwm2.epwmEventTrigger_EPWM_SOC_A_triggerSource                  = "EPWM_SOC_TBCTR_PERIOD";
+epwm2.epwmEventTrigger_EPWM_SOC_A_triggerEventPrescalar          = "1";
 epwm2.epwm.$assign                                               = "EPWM3";
 epwm2.epwm.epwm_aPin.$assign                                     = "GPIO0";
 epwm2.epwm.epwm_bPin.$assign                                     = "GPIO1";
@@ -214,11 +217,11 @@ gpio1.writeInitialValue = true;
 gpio1.gpioPin.$assign   = "A16/C16, GPIO28";
 
 controller1.controllerChoice = "PI";
-controller1.Kp               = "0.001f";
-controller1.Ki               = "0.0001f";
 controller1.Umin             = "0.0f";
 controller1.Imin             = "0.0f";
 controller1.$name            = "pi_current1";
+controller1.Ki               = "0.001f";
+controller1.Kp               = "0.006f";
 
 controller2.controllerChoice = "PI";
 controller2.Kp               = "0.001f";

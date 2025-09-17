@@ -74,8 +74,8 @@ void pi_current1_init(){
     //
     pi_current1.sps = &pi_current1_sps;
     pi_current1.css = &pi_current1_css;
-    pi_current1.Kp = 0.001f;
-    pi_current1.Ki = 0.0001f;
+    pi_current1.Kp = 0.006f;
+    pi_current1.Ki = 0.001f;
     pi_current1.i10 = 0.0f;
     pi_current1.Umax = 1.0f;
     pi_current1.Umin = 0.0f;

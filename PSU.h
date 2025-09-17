@@ -16,12 +16,41 @@
 
 
 
-#define KP 0.001f
-#define KI 0.0001f
-#define INTEGRAL_MAX 1.0f  //4095.0f
-#define INTEGRAL_MIN 0.0f
+// #define KP 0.001f
+// #define KI 0.0001f
+// #define INTEGRAL_MAX 1.0f  //4095.0f
+// #define INTEGRAL_MIN 0.0f
 #define MAX_ADC_INV 0.0002442002f // precomputed 1 / 4095.0f
 
+#define SOFTSTART_SETPOINT_TARGET (2000.0f)
+#define SOFTSTART_SETPOINT_STEP (1.0f)  // How much to increase setpoint each time.
+#define SOFTSTART_INITIAL_SETPOINT (150.0f) // Softstart starts from this setpoint, to avoid too small duty initially.
+#define SOFTSTART_SETPOINT_UPDATE_DIV (240) // Cycles between setpoint increments.
+#define SOFTSTART_TARGET_CONFIDENCE_COUNT (10)
+
+
+// Use an enum for indexing the integrals and compare value arrays.
+enum pwm_index
+{
+    ePWM1, ePWM2, ePWM3, ePWM4
+};
+
+
+// Enum for tracking states
+enum psu_state
+{
+    STANDBY_STATE,
+    SOFTSTART_STATE,
+    ON_STATE,
+    FAULT_STATE
+};
+
+enum psu_fault
+{
+    NO_FAULT,
+    SS_TZ_OSHT,
+    ON_TZ_OSHT
+};
 
 extern float setpoint;
 extern float integrals[4];
@@ -31,14 +60,25 @@ extern float period;
 extern float pwm_scale;
 extern float pwm_compare[4];    // Keeping local copy of compare register values - faster access
 
-// Use an enum for indexing the integrals and compare value arrays.
-enum pwm_index
-{
-    ePWM1, ePWM2, ePWM3, ePWM4
-};
+//extern enum psu_state current_state;
 
+
+// PROTOTYPES
 void init_psu_values();
+bool system_ready();
 
+// ============================== STATE MACHINE SETUP ====================================================
+// Initialize state pointers
+extern void (*state_Ptr)(); // Base States pointer
+
+// Declare State function prototypes
+void init_state();
+void standby_state();
+void softStart_state();
+void on_state();
+void fault_state();
+
+// ############################### INLINE FUNCTION IMPLEMENTATIONS ###########################################
 
 static inline void change_frequency(float new_period_value)
 {
@@ -78,279 +118,14 @@ EPwm4Regs.TBPHS.bit.TBPHS = half_period;    // counts up.
     
     // Call a sync
     EPwm1Regs.GLDCTL2.bit.OSHTLD = 1;   // Arm the global load latch in pwm1.
-    EPwm1Regs.TBCTL2.bit.OSHTSYNC = 1;  // Fire the sync on next ZERO-event in pwm1
-
-    
+    EPwm1Regs.TBCTL2.bit.OSHTSYNC = 1;  // Fire the sync on next ZERO-event in pwm1    
 }
 
 
 
-// // Single channel current loop (Manual)
-// static inline void current_loop()
-// {
-//     // 1. Clear the interrupt flag first - mandatory.
-//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-
-//     // 2. Read adc samples, and convert to float.
-//     float adc_sample1 = (float)AdcaResultRegs.ADCRESULT0;
-
-//     // 2. Calculate mean of the measurement
-//     float compare = pwm_compare[ePWM1];
-//     float duty_cycle = 1.0f - (inv_period * compare);
-//     float adc_avg = adc_sample1 * duty_cycle;
-
-//     // 5. Do the PI calculations and scale.
-//     float error = setpoint - adc_avg;
-//     float P = error * KP;
-//     integrals[0] = __fsat(integrals[0] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);    // Clamp integral for anti-windup
-//     float PI_scaled = (P + integrals[0]) * pwm_scale;   // Rescale from ADC resolution to PWM resolution. (multiply by period, divide by max-adc)
-
-//     // 6. Clamp new compare value, and update our array copy.
-//     compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     pwm_compare[ePWM1] = compare;
-
-//     // 7. convert to integer, and write the new value to shadow register.
-//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // 8. Arm and fire latch, to transfer from shadow.
-//     EPwm1Regs.GLDCTL2.bit.OSHTLD = 1; 
-//     EPwm1Regs.GLDCTL2.bit.GFRCLD = 1;
-// }
 
 
-// // Four channel current loop (Manual)
-// static inline void current_loop_all()
-// {
-//     // Clear ADC end-of-sequence flag once.
-//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-//     // PHASE 1 -----------------------------------------------------------    
-//     // 1. Calculate mean of adc sample.
-//     float compare = pwm_compare[ePWM1];
-//     float old_duty_cycle = 1.0f - (inv_period * compare);
-//     float adc_avg = (float)AdcaResultRegs.ADCRESULT1 * old_duty_cycle;
-
-//     // 3. Do PI calculations and scale.
-//     float error = setpoint - adc_avg;
-//     float P = error * KP;
-//     integrals[ePWM1] = __fsat(integrals[ePWM1] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN); // Anti-windup clamp
-//     float PI_scaled = (P + integrals[ePWM1]) * pwm_scale;
-
-//     // 4. Clamp new compare value, and update the array copy
-//     compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     pwm_compare[ePWM1] = compare;
-//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 2 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM2];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT2 * old_duty_cycle;
-//     error = setpoint - adc_avg;
-//     P = error * KP;
-//     integrals[ePWM2] = __fsat(integrals[ePWM2] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     PI_scaled = (P + integrals[ePWM2]) * pwm_scale;
-//     compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     pwm_compare[ePWM2] = compare;
-//     EPwm2Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 3 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM3];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT3 * old_duty_cycle;
-//     error = setpoint - adc_avg;
-//     P = error * KP;
-//     integrals[ePWM3] = __fsat(integrals[ePWM3] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     PI_scaled = (P + integrals[ePWM3]) * pwm_scale;
-//     compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     pwm_compare[ePWM3] = compare;
-//     EPwm3Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 4 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM4];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT4 * old_duty_cycle;
-//     error = setpoint - adc_avg;
-//     P = error * KP;
-//     integrals[ePWM4] = __fsat(integrals[ePWM4] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     PI_scaled = (P + integrals[ePWM4]) * pwm_scale;
-//     compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     pwm_compare[ePWM4] = compare;
-//     EPwm4Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // Arm and fire latch, to transfer from shadow.
-//     EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm2Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm3Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm4Regs.GLDCTL2.bit.OSHTLD  = 1;
-
-//     EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm2Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm3Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm4Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     //EPWM_startOneShotSync(EPWM1_BASE);
-
-// }
-
-// static inline void current_loop_all_2()
-// {
-//     // Clear ADC end-of-sequence flag once.
-//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-
-//     // PHASE 1 -----------------------------------------------------------    
-//     // 1. Calculate mean of adc sample.
-//     float compare = pwm_compare[ePWM1];
-//     float old_duty_cycle = 1.0f - (inv_period * compare);
-//     float adc_avg = (float)AdcaResultRegs.ADCRESULT1 * old_duty_cycle;
-
-//     // 3. Do PI calculations and scale.
-//     float error = setpoint - adc_avg;
-//     float P = error * KP;
-//     integrals[ePWM1] = __fsat(integrals[ePWM1] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN); // Anti-windup clamp
-//     //float PI_scaled = (P + integrals[ePWM1]) * pwm_scale; // no more scale - aim for pi output = 0-1 range.
-
-//     float pi_output = __fsat(P + integrals[ePWM1], 1.0f, 0.0f);
-
-//     // 4. Clamp new compare value, and update the array copy
-//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM1] = compare;
-//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 2 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM2];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT2 * old_duty_cycle;
-//     error = setpoint - adc_avg;
-//     P = error * KP;
-//     integrals[ePWM2] = __fsat(integrals[ePWM2] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     //PI_scaled = (P + integrals[ePWM2]) * pwm_scale;
-//     pi_output = __fsat(P + integrals[ePWM2], 1.0f, 0.0f);
-//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM2] = compare;
-//     EPwm2Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 3 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM3];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT3 * old_duty_cycle;
-//     error = setpoint - adc_avg;
-//     P = error * KP;
-//     integrals[ePWM3] = __fsat(integrals[ePWM3] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     pi_output = __fsat(P + integrals[ePWM3], 1.0f, 0.0f);
-//     //PI_scaled = (P + integrals[ePWM3]) * pwm_scale;
-//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM3] = compare;
-//     EPwm3Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 4 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM4];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT4 * old_duty_cycle;
-//     error = setpoint - adc_avg;
-//     P = error * KP;
-//     integrals[ePWM4] = __fsat(integrals[ePWM4] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     pi_output = __fsat(P + integrals[ePWM4], 1.0f, 0.0f);
-//     //PI_scaled = (P + integrals[ePWM4]) * pwm_scale;
-//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM4] = compare;
-//     EPwm4Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // Arm and fire latch, to transfer from shadow.
-//     EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm2Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm3Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm4Regs.GLDCTL2.bit.OSHTLD  = 1;
-
-//     EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm2Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm3Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm4Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     //EPWM_startOneShotSync(EPWM1_BASE);
-
-// }
-
-// // DCL library current loop
-// static inline void DCL_current_loop_C4()
-// {
-//     // Clear ADC end-of-sequence flag once.
-//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
-
-//     // PHASE 1 -----------------------------------------------------------    
-//     // 1. Calculate mean of adc sample.
-//     float compare = pwm_compare[ePWM1];
-//     float old_duty_cycle = 1.0f - (inv_period * compare);
-//     float adc_avg = (float)AdcaResultRegs.ADCRESULT1 * old_duty_cycle;
-
-//     // 3. Do PI calculations and scale.
-//     float pi_output = DCL_runPI_C4(&pi_current1, setpoint, adc_avg); // Run the PI controller.
-//     // float error = setpoint - adc_avg;
-//     // float P = error * KP;
-//     // integrals[ePWM1] = __fsat(integrals[ePWM1] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN); // Anti-windup clamp
-//     //float PI_scaled = (P + integrals[ePWM1]) * pwm_scale;
-
-//     // 4. Clamp new compare value, and update the array copy
-//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM1] = compare;
-//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-
-//     // PHASE 2 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM2];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT2 * old_duty_cycle;
-//     // error = setpoint - adc_avg;
-//     // P = error * KP;
-//     // integrals[ePWM2] = __fsat(integrals[ePWM2] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     // PI_scaled = (P + integrals[ePWM2]) * pwm_scale;
-//     pi_output = DCL_runPI_C4(&pi_current2, setpoint, adc_avg);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM2] = compare;
-//     EPwm2Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 3 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM3];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT3 * old_duty_cycle;
-//     // error = setpoint - adc_avg;
-//     // P = error * KP;
-//     // integrals[ePWM3] = __fsat(integrals[ePWM3] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     // PI_scaled = (P + integrals[ePWM3]) * pwm_scale;
-//     pi_output = DCL_runPI_C4(&pi_current3, setpoint, adc_avg);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM3] = compare;
-//     EPwm3Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // PHASE 4 -----------------------------------------------------------
-//     compare = pwm_compare[ePWM4];
-//     old_duty_cycle = 1.0f - (inv_period * compare);
-//     adc_avg = (float)AdcaResultRegs.ADCRESULT4 * old_duty_cycle;
-//     // error = setpoint - adc_avg;
-//     // P = error * KP;
-//     // integrals[ePWM4] = __fsat(integrals[ePWM4] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
-//     // PI_scaled = (P + integrals[ePWM4]) * pwm_scale;
-//     pi_output = DCL_runPI_C4(&pi_current4, setpoint, adc_avg);
-//     compare = period - (pi_output * period);
-//     pwm_compare[ePWM4] = compare;
-//     EPwm4Regs.CMPA.bit.CMPA = __f32toui16r(compare);
-
-//     // Arm and fire latch, to transfer from shadow.
-//     // EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     // EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     // Arm and fire latch, to transfer from shadow.
-//     EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm2Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm3Regs.GLDCTL2.bit.OSHTLD  = 1;
-//     EPwm4Regs.GLDCTL2.bit.OSHTLD  = 1;
-
-//     EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm2Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm3Regs.GLDCTL2.bit.GFRCLD  = 1;
-//     EPwm4Regs.GLDCTL2.bit.GFRCLD  = 1;
-// }
 
 //#pragma CODE_SECTION(DCL_current_loop_C7, "ramfuncs")
 static inline void DCL_current_loop_C7()
@@ -433,54 +208,202 @@ static inline void DCL_current_loop_C7()
 }
 
 
-// static inline void current_loop_fixedpoint()
+
+// // Single channel current loop (Manual)
+// static inline void current_loop()
 // {
+//     // 1. Clear the interrupt flag first - mandatory.
+//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-//     static const uint16_t setpoint = 100;
-//     static int32_t integral = 0;
-//     static const int32_t KP = 8;   // treat as Q5
-//     static const int32_t KI = 2;   // treat as Q5
+//     // 2. Read adc samples, and convert to float.
+//     float adc_sample1 = (float)AdcaResultRegs.ADCRESULT0;
 
-//         // Check if all four pwms have been sampled
-//         if (AdcaRegs.ADCINTFLG.bit.ADCINT1)
-//         {
-//             GpioDataRegs.GPATOGGLE.bit.GPIO24 = 1;  // debug - check timing
+//     // 2. Calculate mean of the measurement
+//     float compare = pwm_compare[ePWM1];
+//     float duty_cycle = 1.0f - (inv_period * compare);
+//     float adc_avg = adc_sample1 * duty_cycle;
 
-//             // Clear the interrupt flag FIRST
-//             AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+//     // 5. Do the PI calculations and scale.
+//     float error = setpoint - adc_avg;
+//     float P = error * KP;
+//     integrals[0] = __fsat(integrals[0] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);    // Clamp integral for anti-windup
+//     float PI_scaled = (P + integrals[0]) * pwm_scale;   // Rescale from ADC resolution to PWM resolution. (multiply by period, divide by max-adc)
 
-//             // Read all ADC results (assumed: SOC0-3)
-//             adc_samples[0] = AdcaResultRegs.ADCRESULT0;
-//             adc_samples[1] = AdcaResultRegs.ADCRESULT1;
-//             adc_samples[2] = AdcaResultRegs.ADCRESULT2;
-//             adc_samples[3] = AdcaResultRegs.ADCRESULT3;
+//     // 6. Clamp new compare value, and update our array copy.
+//     compare = __fsat(compare - PI_scaled, period, 0.0f);
+//     pwm_compare[ePWM1] = compare;
 
-//             // Run current loop
-//             int32_t error = setpoint - adc_samples[0];
-//             int32_t P = error * KP; // Q0*Q5=Q5
-//             integral += error * KI; // Q0*Q5=Q5
-//             // Clamp integral... efficiently?
-//             int32_t PI = P + integral;
+//     // 7. convert to integer, and write the new value to shadow register.
+//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
 
-//             // Rescale from ADC resolution to PWM resolution. multiply by period, divide by 4096
-//             int32_t period = EPwm1Regs.TBPRD;
-//             int32_t PI_scaled = (PI * period); // Is this an efficient read of the period??
-//             PI_scaled = (PI_scaled >> 17);  // divide by 4096 = >>12, plus 5 for Q5 above... => >> 17
-//             int32_t new_compare_value = EPwm1Regs.CMPA.bit.CMPA - PI_scaled; // minus, because compare is inverse related to duty cycle.
+//     // 8. Arm and fire latch, to transfer from shadow.
+//     EPwm1Regs.GLDCTL2.bit.OSHTLD = 1; 
+//     EPwm1Regs.GLDCTL2.bit.GFRCLD = 1;
+// }
 
-//             // Clamp to 0 - period range
-//             if (new_compare_value < 0) new_compare_value = 0;
-//             else if (new_compare_value > period) new_compare_value = period;
 
-//             // Write in new compare value, arm and fire.
-//             EPwm1Regs.CMPA.bit.CMPA = new_compare_value;
-//             EPwm1Regs.GLDCTL2.bit.OSHTLD = 1; 
-//             EPwm1Regs.GLDCTL2.bit.GFRCLD = 1;
 
-//             GpioDataRegs.GPATOGGLE.bit.GPIO24 = 1;  // debug - check timing
+// // DCL library current loop
+// static inline void DCL_current_loop_C4()
+// {
+//     // Clear ADC end-of-sequence flag once.
+//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
 
-//         }
-//     }
+//     // PHASE 1 -----------------------------------------------------------    
+//     // 1. Calculate mean of adc sample.
+//     float compare = pwm_compare[ePWM1];
+//     float old_duty_cycle = 1.0f - (inv_period * compare);
+//     float adc_avg = (float)AdcaResultRegs.ADCRESULT1 * old_duty_cycle;
+
+//     // 3. Do PI calculations and scale.
+//     float pi_output = DCL_runPI_C4(&pi_current1, setpoint, adc_avg); // Run the PI controller.
+//     // float error = setpoint - adc_avg;
+//     // float P = error * KP;
+//     // integrals[ePWM1] = __fsat(integrals[ePWM1] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN); // Anti-windup clamp
+//     //float PI_scaled = (P + integrals[ePWM1]) * pwm_scale;
+
+//     // 4. Clamp new compare value, and update the array copy
+//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM1] = compare;
+//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+
+//     // PHASE 2 -----------------------------------------------------------
+//     compare = pwm_compare[ePWM2];
+//     old_duty_cycle = 1.0f - (inv_period * compare);
+//     adc_avg = (float)AdcaResultRegs.ADCRESULT2 * old_duty_cycle;
+//     // error = setpoint - adc_avg;
+//     // P = error * KP;
+//     // integrals[ePWM2] = __fsat(integrals[ePWM2] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
+//     // PI_scaled = (P + integrals[ePWM2]) * pwm_scale;
+//     pi_output = DCL_runPI_C4(&pi_current2, setpoint, adc_avg);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM2] = compare;
+//     EPwm2Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // PHASE 3 -----------------------------------------------------------
+//     compare = pwm_compare[ePWM3];
+//     old_duty_cycle = 1.0f - (inv_period * compare);
+//     adc_avg = (float)AdcaResultRegs.ADCRESULT3 * old_duty_cycle;
+//     // error = setpoint - adc_avg;
+//     // P = error * KP;
+//     // integrals[ePWM3] = __fsat(integrals[ePWM3] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
+//     // PI_scaled = (P + integrals[ePWM3]) * pwm_scale;
+//     pi_output = DCL_runPI_C4(&pi_current3, setpoint, adc_avg);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM3] = compare;
+//     EPwm3Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // PHASE 4 -----------------------------------------------------------
+//     compare = pwm_compare[ePWM4];
+//     old_duty_cycle = 1.0f - (inv_period * compare);
+//     adc_avg = (float)AdcaResultRegs.ADCRESULT4 * old_duty_cycle;
+//     // error = setpoint - adc_avg;
+//     // P = error * KP;
+//     // integrals[ePWM4] = __fsat(integrals[ePWM4] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
+//     // PI_scaled = (P + integrals[ePWM4]) * pwm_scale;
+//     pi_output = DCL_runPI_C4(&pi_current4, setpoint, adc_avg);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM4] = compare;
+//     EPwm4Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // Arm and fire latch, to transfer from shadow.
+//     // EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     // EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     // Arm and fire latch, to transfer from shadow.
+//     EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     EPwm2Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     EPwm3Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     EPwm4Regs.GLDCTL2.bit.OSHTLD  = 1;
+
+//     EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     EPwm2Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     EPwm3Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     EPwm4Regs.GLDCTL2.bit.GFRCLD  = 1;
+// }
+
+
+// static inline void current_loop_all_2()
+// {
+//     // Clear ADC end-of-sequence flag once.
+//     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;
+
+//     // PHASE 1 -----------------------------------------------------------    
+//     // 1. Calculate mean of adc sample.
+//     float compare = pwm_compare[ePWM1];
+//     float old_duty_cycle = 1.0f - (inv_period * compare);
+//     float adc_avg = (float)AdcaResultRegs.ADCRESULT1 * old_duty_cycle;
+
+//     // 3. Do PI calculations and scale.
+//     float error = setpoint - adc_avg;
+//     float P = error * KP;
+//     integrals[ePWM1] = __fsat(integrals[ePWM1] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN); // Anti-windup clamp
+//     //float PI_scaled = (P + integrals[ePWM1]) * pwm_scale; // no more scale - aim for pi output = 0-1 range.
+
+//     float pi_output = __fsat(P + integrals[ePWM1], 1.0f, 0.0f);
+
+//     // 4. Clamp new compare value, and update the array copy
+//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM1] = compare;
+//     EPwm1Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // PHASE 2 -----------------------------------------------------------
+//     compare = pwm_compare[ePWM2];
+//     old_duty_cycle = 1.0f - (inv_period * compare);
+//     adc_avg = (float)AdcaResultRegs.ADCRESULT2 * old_duty_cycle;
+//     error = setpoint - adc_avg;
+//     P = error * KP;
+//     integrals[ePWM2] = __fsat(integrals[ePWM2] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
+//     //PI_scaled = (P + integrals[ePWM2]) * pwm_scale;
+//     pi_output = __fsat(P + integrals[ePWM2], 1.0f, 0.0f);
+//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM2] = compare;
+//     EPwm2Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // PHASE 3 -----------------------------------------------------------
+//     compare = pwm_compare[ePWM3];
+//     old_duty_cycle = 1.0f - (inv_period * compare);
+//     adc_avg = (float)AdcaResultRegs.ADCRESULT3 * old_duty_cycle;
+//     error = setpoint - adc_avg;
+//     P = error * KP;
+//     integrals[ePWM3] = __fsat(integrals[ePWM3] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
+//     pi_output = __fsat(P + integrals[ePWM3], 1.0f, 0.0f);
+//     //PI_scaled = (P + integrals[ePWM3]) * pwm_scale;
+//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM3] = compare;
+//     EPwm3Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // PHASE 4 -----------------------------------------------------------
+//     compare = pwm_compare[ePWM4];
+//     old_duty_cycle = 1.0f - (inv_period * compare);
+//     adc_avg = (float)AdcaResultRegs.ADCRESULT4 * old_duty_cycle;
+//     error = setpoint - adc_avg;
+//     P = error * KP;
+//     integrals[ePWM4] = __fsat(integrals[ePWM4] + (error * KI), INTEGRAL_MAX, INTEGRAL_MIN);
+//     pi_output = __fsat(P + integrals[ePWM4], 1.0f, 0.0f);
+//     //PI_scaled = (P + integrals[ePWM4]) * pwm_scale;
+//     //compare = __fsat(compare - PI_scaled, period, 0.0f);
+//     compare = period - (pi_output * period);
+//     pwm_compare[ePWM4] = compare;
+//     EPwm4Regs.CMPA.bit.CMPA = __f32toui16r(compare);
+
+//     // Arm and fire latch, to transfer from shadow.
+//     EPwm1Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     EPwm2Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     EPwm3Regs.GLDCTL2.bit.OSHTLD  = 1;
+//     EPwm4Regs.GLDCTL2.bit.OSHTLD  = 1;
+
+//     EPwm1Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     EPwm2Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     EPwm3Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     EPwm4Regs.GLDCTL2.bit.GFRCLD  = 1;
+//     //EPWM_startOneShotSync(EPWM1_BASE);
+
+// }
 
 
 #endif /* PSU_H */

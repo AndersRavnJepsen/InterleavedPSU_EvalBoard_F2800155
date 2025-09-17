@@ -325,7 +325,7 @@ void cmpss3_init(){
     //
     // Sets the value of the internal DAC of the high comparator.
     //
-    CMPSSLITE_setDACValueHigh(cmpss3_BASE,1800U);
+    CMPSSLITE_setDACValueHigh(cmpss3_BASE,1500U);
     //
     // Sets the value of the internal DAC of the low comparator.
     //
@@ -452,6 +452,9 @@ void EPWM_init(){
     EPWM_disableRisingEdgeDelayCountShadowLoadMode(ePWM3_BASE);	
     EPWM_setFallingEdgeDelayCountShadowLoadMode(ePWM3_BASE, EPWM_FED_LOAD_ON_CNTR_ZERO);	
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(ePWM3_BASE);	
+    EPWM_enableADCTrigger(ePWM3_BASE, EPWM_SOC_A);	
+    EPWM_setADCTriggerSource(ePWM3_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
+    EPWM_setADCTriggerEventPrescale(ePWM3_BASE, EPWM_SOC_A, 1);	
     EPWM_enableGlobalLoad(ePWM4_BASE);	
     EPWM_setGlobalLoadTrigger(ePWM4_BASE, EPWM_GL_LOAD_PULSE_SYNC);	
     EPWM_setGlobalLoadEventPrescale(ePWM4_BASE, 1);	
